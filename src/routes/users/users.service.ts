@@ -9,12 +9,15 @@ import { AuthenticationBodyDTO } from './dto/authentication-body.dto';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { CreateUserBodyDTO } from './dto/create-user.dto';
 import { uuidv7 } from 'uuidv7';
+import { UpdateUserBodyDTO } from './dto/update-user.dto';
+import { TagsService } from '../tags/tags.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private tokenService: TokenService,
     private prismaService: PrismaService,
+    private tagService: TagsService,
   ) {}
 
   private encryptPassword(password: string) {
@@ -81,5 +84,52 @@ export class UsersService {
     return {
       token: await this.tokenService.createToken({ ...userData }),
     };
+  }
+
+  async getUser(id: string) {
+    const user = await this.prismaService.user.findFirst({
+      where: { id },
+      include: { tags: { include: { tag: true } } },
+    });
+    if (!user) throw new PreconditionFailedException('Id not exists.');
+
+    return user;
+  }
+
+  async updateUser({ name, email, password }: UpdateUserBodyDTO) {
+    const updateUser = await this.prismaService.user.update({
+      include: {
+        tags: true,
+      },
+      where: {
+        email,
+      },
+      data: {
+        name,
+        password,
+        email,
+      },
+    });
+    return updateUser;
+  }
+
+  async rewardTag(id: string) {
+    const user = await this.getUser(id);
+
+    const userTag = user.tags.map(({ tag }) => {
+      return tag.id;
+    });
+
+    const tags = await this.tagService.getTag({});
+    const filteredTags = tags.filter(({ id }) => !userTag.includes(id));
+    const randomTag =
+      filteredTags[Math.floor(Math.random() * filteredTags.length)];
+    const userWithTag = await this.prismaService.usersTags.create({
+      data: {
+        userId: id,
+        tagId: randomTag.id,
+      },
+    });
+    return userWithTag;
   }
 }
