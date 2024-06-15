@@ -38,7 +38,7 @@ model Tag {
 }
 
 model UsersTags {
-  id        Int     @id @default(autoincrement())
+  id        String     @id
   user      User    @relation(fields: [userId], references: [id])
   userId    String
   tag       Tag     @relation(fields: [tagId], references: [id])

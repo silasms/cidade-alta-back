@@ -24,7 +24,7 @@ CREATE TABLE `tags` (
 
 -- CreateTable
 CREATE TABLE `users_tags` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `tagId` VARCHAR(191) NOT NULL,
 

@@ -126,6 +126,7 @@ export class UsersService {
       filteredTags[Math.floor(Math.random() * filteredTags.length)];
     const userWithTag = await this.prismaService.usersTags.create({
       data: {
+        id: uuidv7(),
         userId: id,
         tagId: randomTag.id,
       },
