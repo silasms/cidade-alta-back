@@ -43,6 +43,8 @@ model UsersTags {
   userId    String
   tag       Tag     @relation(fields: [tagId], references: [id])
   tagId     String
+
+  @@map("users_tags")
 }
 
 model Category {
