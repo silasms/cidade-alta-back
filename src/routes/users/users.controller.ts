@@ -80,4 +80,16 @@ export class UsersController {
   rewardTag(@Param('id') id: string) {
     return this.user.rewardTag(id);
   }
+
+  @ApiOperation({
+    summary: 'Validate token.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Return an authentication token generated with JWT.',
+  })
+  @Post('validatetoken')
+  validateToken(@Body() body: { token: string }) {
+    return this.user.validateToken(body);
+  }
 }

@@ -64,6 +64,10 @@ export class UsersService {
     };
   }
 
+  async validateToken({ token }: { token: string }) {
+    return await this.tokenService.decodeUser(token);
+  }
+
   async createUser({ email, password, name }: CreateUserBodyDTO) {
     const user = await this.prismaService.user.findFirst({
       select: { id: true },
