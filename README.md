@@ -32,9 +32,19 @@
 $ yarn install
 ```
 
+## Envs
+DATABASE_URL='your databse'
+SECRET='anything for jwt'
+
 ## Running the app
 
 ```bash
+# up db
+npx prisma db push
+
+# up seeder
+npx prisma db seed
+
 # development
 $ yarn run start
 
