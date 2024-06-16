@@ -6,6 +6,9 @@ export class TagsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getTag(filter: any) {
-    return await this.prismaService.tag.findMany({ where: filter });
+    return await this.prismaService.tag.findMany({
+      where: filter,
+      include: { category: true },
+    });
   }
 }
