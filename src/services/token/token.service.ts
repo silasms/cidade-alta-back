@@ -26,4 +26,8 @@ export class TokenService<T extends string | object | Buffer = any> {
         null;
       })) as T;
   }
+
+  async decodeUser(token: string) {
+    return (await this.jwtService.decode(token)) as T;
+  }
 }
