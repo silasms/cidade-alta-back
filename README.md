@@ -45,6 +45,11 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Swagger
+```
+There is swagger, route is '/api', for example: http://localhost:3000/api
+```
+
 ## Test
 
 ```bash
