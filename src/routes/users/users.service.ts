@@ -126,6 +126,8 @@ export class UsersService {
 
     const tags = await this.tagService.getTag({});
     const filteredTags = tags.filter(({ id }) => !userTag.includes(id));
+    if (filteredTags.length <= 0)
+      throw new PreconditionFailedException('You have all tags');
     const randomTag =
       filteredTags[Math.floor(Math.random() * filteredTags.length)];
     const userWithTag = await this.prismaService.usersTags.create({
@@ -133,6 +135,13 @@ export class UsersService {
         id: uuidv7(),
         userId: id,
         tagId: randomTag.id,
+      },
+      include: {
+        tag: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
     return userWithTag;
